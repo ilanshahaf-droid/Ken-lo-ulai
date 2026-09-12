@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>אילת ❤️ אילן – כן · לא · אולי</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f0f4f8;
+      --bg-card: #ffffff;
+      --bg-elevated: #e8f0fe;
+      --accent: #0d9488;
+      --accent-2: #db2777;
+      --accent-3: #7c3aed;
+      --gold: #d97706;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --yes: #059669;
+      --no: #dc2626;
+      --maybe: #d97706;
+      --shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Heebo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse at 10% 0%, rgba(13, 148, 136, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 100%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 40%, rgba(219, 39, 119, 0.06) 0%, transparent 55%);
+    }
+    .app { max-width: 480px; margin: 0 auto; padding: 20px 16px 90px; min-height: 100vh; }
+    .screen { display: none; animation: fadeUp 0.4s ease; }
+    .screen.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .logo-wrap { text-align: center; margin-bottom: 6px; }
+    .logo-svg { width: 240px; max-width: 85%; height: auto; }
+    .header { text-align: center; margin-bottom: 20px; }
+    .header h1 {
+      font-family: 'Rubik', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 4px;
+    }
+    .header .subtitle { color: var(--text-muted); font-size: 0.92rem; font-weight: 300; }
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(13, 148, 136, 0.15);
+      margin-bottom: 16px;
+    }
+    .btn {
+      display: block; width: 100%; padding: 15px 20px; border: none; border-radius: 14px;
+      font-family: 'Heebo', sans-serif; font-size: 1.05rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s ease; text-align: center;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-primary {
+      background: linear-gradient(135deg, #0d9488, #14b8a6);
+      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(13, 148, 136, 0.35);
+    }
+    .btn-secondary {
+      background: var(--bg-elevated);
+      color: var(--text);
+      border: 1px solid rgba(100, 116, 139, 0.25);
+    }
+    .btn-outline { background: transparent; border: 1.5px solid var(--accent); color: var(--accent); }
+    .btn-sm { padding: 10px 14px; font-size: 0.88rem; width: auto; display: inline-block; }
+    .answer-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 18px; }
+    .btn-yes {
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #ffffff; font-size: 1.15rem; font-weight: 700; padding: 18px 8px;
+    }
+    .btn-no {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+      color: #ffffff; font-size: 1.15rem; font-weight: 700; padding: 18px 8px;
+    }
+    .btn-maybe {
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      color: #ffffff; font-size: 1.15rem; font-weight: 700; padding: 18px 8px;
+    }
+    .cat-chip {
+      display: inline-block; padding: 5px 12px; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 600; margin-bottom: 12px; letter-spacing: 0.3px;
+    }
+    .chip-role { background: #ede9fe; color: #6d28d9; }
+    .chip-challenge { background: #fce7f3; color: #be185d; }
+    .chip-question { background: #ccfbf1; color: #0f766e; }
+    .chip-fantasy { background: #fef3c7; color: #b45309; }
+    .chip-creative { background: #dbeafe; color: #1d4ed8; }
+    .chip-wild { background: #fee2e2; color: #b91c1c; }
+    .chip-surprise {
+      background: linear-gradient(135deg, #fef3c7, #fce7f3);
+      color: #9d174d; border: 1.5px dashed #db2777;
+      animation: pulse 1.5s ease infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+    .prompt-text {
+      font-size: 1.22rem; line-height: 1.55; text-align: center; min-height: 90px;
+      display: flex; align-items: center; justify-content: center; font-weight: 500;
+    }
+    .result-box {
+      text-align: center; padding: 16px; border-radius: 16px; margin-top: 14px;
+      font-size: 1.02rem; line-height: 1.5;
+    }
+    .result-yes { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+    .result-no { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .result-maybe { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .timer-box {
+      display: none; text-align: center; margin-top: 16px; padding: 16px;
+      background: #f5f3ff; border-radius: 16px; border: 1px solid #ddd6fe;
+    }
+    .timer-box.active { display: block; }
+    .timer-display {
+      font-size: 2.4rem; font-weight: 700; color: var(--accent-3);
+      font-variant-numeric: tabular-nums; letter-spacing: 1px;
+    }
+    .progress-bar {
+      height: 5px; background: #e2e8f0; border-radius: 4px; margin: 12px 0 8px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 4px; transition: width 0.4s ease;
+    }
+    .round-label { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 4px; }
+    .toast {
+      position: fixed; top: 18px; left: 50%; transform: translateX(-50%) translateY(-90px);
+      background: var(--bg-card); color: var(--text); padding: 12px 20px; border-radius: 12px;
+      box-shadow: var(--shadow); border: 1px solid rgba(13, 148, 136, 0.25);
+      z-index: 200; opacity: 0; transition: all 0.35s ease; font-size: 0.92rem;
+      max-width: 90%; text-align: center;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .rules-list { list-style: none; margin: 14px 0; }
+    .rules-list li {
+      padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 0.9rem;
+      color: var(--text-muted); display: flex; gap: 10px; align-items: flex-start;
+    }
+    .rules-list li:last-child { border-bottom: none; }
+    .rules-list .icon { font-size: 1.1rem; flex-shrink: 0; }
+    .type-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 14px 0; }
+    .type-item {
+      background: var(--bg-elevated); border-radius: 12px; padding: 12px 6px;
+      text-align: center; font-size: 0.78rem; color: var(--text-muted);
+      border: 1px solid rgba(13, 148, 136, 0.12);
+    }
+    .type-item .emoji { font-size: 1.35rem; display: block; margin-bottom: 4px; }
+    .type-item strong { color: var(--text); font-weight: 500; display: block; }
+    .final-card {
+      background: #f8fafc; border-radius: 14px; padding: 16px; margin-bottom: 12px;
+      border: 1px solid #e2e8f0; border-right: 4px solid var(--accent);
+    }
+    .final-card .label { font-size: 0.75rem; color: var(--accent); font-weight: 600; margin-bottom: 4px; }
+    .surprise-banner {
+      display: none; text-align: center;
+      background: linear-gradient(135deg, #fef3c7, #fce7f3);
+      color: #9d174d; padding: 10px; border-radius: 12px; font-weight: 700;
+      font-size: 0.95rem; margin-bottom: 12px; border: 1.5px dashed #db2777;
+      animation: pulse 1.2s ease infinite;
+    }
+    .surprise-banner.show { display: block; }
+    .length-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 14px 0; }
+    .length-btn {
+      background: var(--bg-elevated); border: 1.5px solid rgba(13, 148, 136, 0.15); border-radius: 12px;
+      padding: 10px 6px; text-align: center; cursor: pointer; font-family: 'Heebo', sans-serif;
+      color: var(--text-muted); transition: all 0.15s ease;
+    }
+    .length-btn strong { display: block; color: var(--text); font-size: 0.92rem; margin-bottom: 2px; }
+    .length-btn span { font-size: 0.72rem; }
+    .length-btn.active {
+      background: linear-gradient(135deg, rgba(13,148,136,0.14), rgba(219,39,119,0.1));
+      border-color: var(--accent); color: var(--accent);
+    }
+    .length-btn.active strong { color: var(--accent); }
+    .type-item.cat-toggle { cursor: pointer; transition: all 0.15s ease; opacity: 0.45; }
+    .type-item.cat-toggle.active { opacity: 1; border-color: var(--accent); background: #ecfdf5; }
+    .type-item.locked { cursor: default; }
+    .section-label { text-align: center; font-size: 0.85rem; color: var(--text-muted); margin: 4px 0 8px; }
+    .btn-icon {
+      background: none; border: none; font-size: 1.15rem; cursor: pointer; padding: 4px 8px;
+      color: var(--text-muted); transition: transform 0.15s ease;
+    }
+    .btn-icon:active { transform: scale(0.9); }
+    .play-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px; }
+    .btn-heart {
+      background: var(--bg-elevated); border: 1.5px solid rgba(219, 39, 119, 0.25); border-radius: 12px;
+      font-size: 1.3rem; cursor: pointer; padding: 10px 16px; transition: all 0.15s ease; line-height: 1;
+    }
+    .btn-heart.active { background: #fce7f3; border-color: #db2777; }
+    .btn-heart:active { transform: scale(0.92); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center; }
+    .stats-grid .stat-num { font-size: 1.4rem; font-weight: 700; color: var(--text); }
+    .stats-grid .stat-label { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+    .fav-item {
+      background: #fdf2f8; border: 1px solid #fbcfe8; border-right: 4px solid #db2777;
+      border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; font-size: 0.88rem; line-height: 1.5;
+    }
+    .fav-item .fav-chip { font-size: 0.72rem; color: #be185d; font-weight: 600; margin-bottom: 4px; display: block; }
+    .fav-empty { text-align: center; color: var(--text-muted); font-size: 0.88rem; padding: 10px 0; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div id="screen-welcome" class="screen active">
+      <div class="logo-wrap">
+        <svg class="logo-svg" viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="heartG" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0d9488"/><stop offset="50%" stop-color="#db2777"/><stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+            <linearGradient id="textG" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#0d9488"/><stop offset="50%" stop-color="#db2777"/><stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+          <path d="M50 70 Q160 20 270 70" fill="none" stroke="rgba(13,148,136,0.25)" stroke-width="1.5"/>
+          <g transform="translate(160, 55)">
+            <path d="M0,-11 C-7,-20 -20,-16 -20,-5 C-20,6 0,20 0,20 C0,20 20,6 20,-5 C20,-16 7,-20 0,-11 Z" fill="url(#heartG)"/>
+          </g>
+          <text x="78" y="50" font-family="Rubik, sans-serif" font-size="24" font-weight="700" fill="url(#textG)" text-anchor="middle">אילת</text>
+          <text x="242" y="50" font-family="Rubik, sans-serif" font-size="24" font-weight="700" fill="url(#textG)" text-anchor="middle">אילן</text>
+        </svg>
+      </div>
+      <div class="header">
+        <h1>כן · לא · אולי</h1>
+        <p class="subtitle">משחק של בחירות, אתגרים ותפקידים</p>
+      </div>
+      <div class="card">
+        <p style="text-align:center; color:var(--text-muted); font-size:0.95rem; line-height:1.55; margin-bottom:12px;">
+          כל תור נשלף קלף – משימה, תפקיד או שאלה.<br>
+          אתם לא עונים על השאלה עצמה, אלא בוחרים:
+        </p>
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:14px; padding:14px 16px; margin-bottom:14px; font-size:0.9rem; line-height:1.6;">
+          <div style="margin-bottom:6px;"><strong style="color:var(--yes)">✓ כן</strong> — רוצים לעשות / לענות במלוא הכנות</div>
+          <div style="margin-bottom:6px;"><strong style="color:var(--maybe)">~ אולי</strong> — גרסה קלה יותר / מתלבטים</div>
+          <div><strong style="color:var(--no)">✗ לא</strong> — מדלגים או מקבלים חלופה רכה יותר</div>
+        </div>
+        <p class="section-label">כמה זמן יש לכם הערב?</p>
+        <div class="length-grid" id="length-grid">
+          <div class="length-btn" data-len="10" onclick="selectLength(10)"><strong>קצר</strong><span>10 קלפים</span></div>
+          <div class="length-btn" data-len="20" onclick="selectLength(20)"><strong>בינוני</strong><span>20 קלפים</span></div>
+          <div class="length-btn active" data-len="30" onclick="selectLength(30)"><strong>ארוך</strong><span>30 קלפים</span></div>
+        </div>
+        <p class="section-label">אילו סוגי קלפים לכלול?</p>
+        <div class="type-grid">
+          <div class="type-item cat-toggle active" data-cat="role" onclick="toggleCategory('role')"><span class="emoji">🎭</span><strong>תפקידים</strong></div>
+          <div class="type-item cat-toggle active" data-cat="challenge" onclick="toggleCategory('challenge')"><span class="emoji">🔥</span><strong>אתגרים</strong></div>
+          <div class="type-item cat-toggle active" data-cat="question" onclick="toggleCategory('question')"><span class="emoji">💭</span><strong>שאלות</strong></div>
+          <div class="type-item cat-toggle active" data-cat="fantasy" onclick="toggleCategory('fantasy')"><span class="emoji">✨</span><strong>פנטזיות</strong></div>
+          <div class="type-item cat-toggle active" data-cat="creative" onclick="toggleCategory('creative')"><span class="emoji">🎨</span><strong>יצירתי</strong></div>
+          <div class="type-item cat-toggle active" data-cat="wild" onclick="toggleCategory('wild')"><span class="emoji">🎲</span><strong>פראי</strong></div>
+        </div>
+        <p style="text-align:center; font-size:0.78rem; color:var(--text-muted); margin:-4px 0 12px;">לחצו על קטגוריה כדי להוסיף/להסיר (קלפי „הפתעה” 🎁 תמיד כלולים)</p>
+        <ul class="rules-list">
+          <li><span class="icon">1️⃣</span> שולפים קלף (משימה / שאלה / תפקיד)</li>
+          <li><span class="icon">2️⃣</span> בוחרים <strong>כן</strong> (עושים), <strong>אולי</strong> (גרסה קלה) או <strong>לא</strong> (חלופה)</li>
+          <li><span class="icon">3️⃣</span> כל 3–4 קלפים מופיע <strong>קלף הפתעה</strong> עם משימה לא צפויה</li>
+          <li><span class="icon">4️⃣</span> ככל שמתקדמים, הקלפים נעשים קצת יותר אינטימיים</li>
+          <li><span class="icon">5️⃣</span> אחרי מספר הקלפים שבחרתם עוברים לסיום מרגש</li>
+        </ul>
+        <button class="btn btn-primary" onclick="startGame()">מתחילים ✨</button>
+      </div>
+    </div>
+
+    <div id="screen-play" class="screen">
+      <div class="logo-wrap" style="margin-bottom:2px;">
+        <svg class="logo-svg" style="width:170px;" viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="heartG2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0d9488"/><stop offset="50%" stop-color="#db2777"/><stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+            <linearGradient id="textG2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#0d9488"/><stop offset="50%" stop-color="#db2777"/><stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+          <g transform="translate(160, 55)">
+            <path d="M0,-11 C-7,-20 -20,-16 -20,-5 C-20,6 0,20 0,20 C0,20 20,6 20,-5 C20,-16 7,-20 0,-11 Z" fill="url(#heartG2)"/>
+          </g>
+          <text x="78" y="50" font-family="Rubik, sans-serif" font-size="24" font-weight="700" fill="url(#textG2)" text-anchor="middle">אילת</text>
+          <text x="242" y="50" font-family="Rubik, sans-serif" font-size="24" font-weight="700" fill="url(#textG2)" text-anchor="middle">אילן</text>
+        </svg>
+      </div>
+      <div class="play-topbar">
+        <span style="width:32px;"></span>
+        <div class="round-label" style="margin-bottom:0;">קלף <span id="round-num">1</span> מתוך <span id="max-rounds">30</span></div>
+        <button class="btn-icon" id="btn-sound" onclick="toggleSound()" title="השתק/הפעל צליל">🔊</button>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:3.33%"></div></div>
+      <div class="surprise-banner" id="surprise-banner">🎁 קלף הפתעה!</div>
+      <div class="card" id="draw-card">
+        <p style="text-align:center; color:var(--text-muted); margin-bottom:16px;">לחצו כדי לשלוף קלף חדש</p>
+        <button class="btn btn-primary" id="btn-draw" onclick="drawCard()">🃏 שלוף קלף</button>
+      </div>
+      <div class="card" id="prompt-card" style="display:none;">
+        <div style="text-align:center;"><span class="cat-chip" id="cat-chip"></span></div>
+        <div class="prompt-text" id="prompt-text"></div>
+        <p id="choice-hint" style="text-align:center; font-size:0.82rem; color:var(--text-muted); margin:12px 0 4px; line-height:1.4;">
+          כן = עושים · אולי = גרסה קלה · לא = חלופה
+        </p>
+        <div class="answer-row" id="answer-row">
+          <button class="btn btn-yes" onclick="answer('yes')">כן</button>
+          <button class="btn btn-maybe" onclick="answer('maybe')">אולי</button>
+          <button class="btn btn-no" onclick="answer('no')">לא</button>
+        </div>
+      </div>
+      <div class="card" id="result-card" style="display:none;">
+        <div class="result-box" id="result-box"></div>
+        <div class="timer-box" id="timer-box">
+          <div style="font-size:0.9rem; color:var(--accent-3); margin-bottom:4px;" id="timer-label">זמן לתפקיד</div>
+          <div class="timer-display" id="timer-display">2:00</div>
+          <div style="margin-top:10px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+            <button class="btn btn-sm btn-secondary" onclick="startTimer(60)">1 דק׳</button>
+            <button class="btn btn-sm btn-secondary" onclick="startTimer(120)">2 דק׳</button>
+            <button class="btn btn-sm btn-secondary" onclick="startTimer(180)">3 דק׳</button>
+            <button class="btn btn-sm btn-outline" onclick="stopTimer()">עצור</button>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; align-items:stretch;">
+          <button class="btn-heart" id="btn-fav" onclick="toggleFavorite()" title="שמור קלף למועדפים">🤍</button>
+          <button class="btn btn-secondary" style="flex:1; min-width:100px;" onclick="backToChoice()">↩ שנה בחירה</button>
+          <button class="btn btn-primary" style="flex:1; min-width:100px;" onclick="nextCard()">קלף הבא</button>
+        </div>
+        <div style="text-align:center; margin-top:10px;">
+          <button class="btn btn-outline btn-sm" onclick="goToFinal()">עבור לסיום המרגש</button>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:14px;">
+        <button class="btn btn-outline btn-sm" onclick="goToFinal()">עבור לסיום המרגש</button>
+      </div>
+    </div>
+
+    <div id="screen-final" class="screen">
+      <div class="logo-wrap">
+        <svg class="logo-svg" style="width:190px;" viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="heartG3" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0d9488"/><stop offset="50%" stop-color="#db2777"/><stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+            <linearGradient id="textG3" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#0d9488"/><stop offset="50%" stop-color="#db2777"/><stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+          <g transform="translate(160, 55)">
+            <path d="M0,-11 C-7,-20 -20,-16 -20,-5 C-20,6 0,20 0,20 C0,20 20,6 20,-5 C20,-16 7,-20 0,-11 Z" fill="url(#heartG3)"/>
+          </g>
+          <text x="78" y="50" font-family="Rubik, sans-serif" font-size="24" font-weight="700" fill="url(#textG3)" text-anchor="middle">אילת</text>
+          <text x="242" y="50" font-family="Rubik, sans-serif" font-size="24" font-weight="700" fill="url(#textG3)" text-anchor="middle">אילן</text>
+        </svg>
+      </div>
+      <div class="header">
+        <h1 style="font-size:1.7rem;">סיום הערב</h1>
+        <p class="subtitle">שלושה רגעים אחרונים</p>
+      </div>
+      <div class="card">
+        <p class="section-label" style="margin-bottom:10px;">איך היה הערב שלכם</p>
+        <div class="stats-grid">
+          <div><div class="stat-num" id="stat-yes">0</div><div class="stat-label">✅ כן</div></div>
+          <div><div class="stat-num" id="stat-maybe">0</div><div class="stat-label">💭 אולי</div></div>
+          <div><div class="stat-num" id="stat-no">0</div><div class="stat-label">❌ לא</div></div>
+          <div><div class="stat-num" id="stat-surprise">0</div><div class="stat-label">🎁 הפתעות</div></div>
+        </div>
+      </div>
+      <div class="card" id="favorites-card">
+        <p class="section-label" style="margin-bottom:10px;">💗 הקלפים האהובים עליכם</p>
+        <div id="favorites-list"></div>
+        <div style="display:flex; gap:10px; margin-top:6px;">
+          <button class="btn btn-sm btn-secondary" style="flex:1;" onclick="copyFavorites()">📋 העתקה</button>
+          <button class="btn btn-sm btn-secondary" style="flex:1;" onclick="shareFavorites()">↗ שיתוף</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="final-card">
+          <div class="label">1 · הערכה</div>
+          <p>דבר אחד מהערב הזה שגרם לך להרגיש קרוב/ה יותר.</p>
+        </div>
+        <div class="final-card">
+          <div class="label">2 · בחירה</div>
+          <p>דבר אחד שאת/ה אומר/ת לו/לה עכשיו „כן” בלי היסוס.</p>
+        </div>
+        <div class="final-card">
+          <div class="label">3 · משפט אהבה</div>
+          <p>משפט קצר שאת/ה רוצה שתשמע/י לפני שהערב נגמר.</p>
+        </div>
+        <div class="timer-box active" style="margin-top:8px;">
+          <div style="font-size:0.9rem; color:var(--accent-3); margin-bottom:4px;">💞 חיבוק סיום</div>
+          <div class="timer-display" id="final-timer">0:30</div>
+          <div style="margin-top:10px;">
+            <button class="btn btn-sm btn-primary" onclick="startFinalTimer()">התחל 30 שניות</button>
+            <button class="btn btn-sm btn-outline" style="margin-right:8px;" onclick="stopTimer()">עצור</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="restartGame()">ערב חדש</button>
+      <button class="btn btn-secondary" style="margin-top:10px;" onclick="showScreen('welcome')">חזרה לפתיחה</button>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script>
+    const deck = [{ type:'role', depth:1, chip:'chip-role', label:'🎭 תפקיד', text:'דמיינו שאתם נפגשים לראשונה בבר. שחקו את הסצנה ל-2 דקות – כאילו אתם לא מכירים.', yes:'מצוין! הפעילו טיימר ל-2 דקות ושיחקו. מי שמתחיל מציע את המשקה הראשון.', no:'בסדר. במקום זה – ספרו אחד לשני מה הייתם לובשים / אומרים אם באמת נפגשתם היום לראשונה.', maybe:'גרסה קלה: רק 60 שניות, בלי לקום מהספה. מי שרוצה יכול להוסיף מבטא מצחיק.' },
+      { type:'role', depth:1, chip:'chip-role', label:'🎭 תפקיד', text:'אחד מכם הוא „המראיין”, השני הוא „המועמד/ת לעבודה” בתפקיד „בן/בת הזוג המושלם”. 90 שניות של ראיון.', yes:'יוצאים לדרך! בחרו תפקידים והפעילו טיימר. בסוף המראיין נותן ציון מ-1 עד 10.', no:'אז במקום זה: כל אחד אומר 3 „דרישות עבודה” אמיתיות ממערכת היחסים.', maybe:'גרסה רכה: רק 3 שאלות ראיון רציניות, בלי טיימר.' },
+      { type:'role', depth:1, chip:'chip-role', label:'🎭 תפקיד', text:'אתם שני זרים שנתקעים במעלית ל-3 דקות. שחקו את הסצנה.', yes:'הפעילו טיימר ל-3 דקות. אסור לצאת מהדמות עד שהזמן נגמר.', no:'במקום תפקיד – ספרו על פעם אמיתית שהרגשתם „תקועים” ביחד ואיך יצאתם מזה.', maybe:'דקה וחצי בלבד, ואפשר לצחוק בחופשיות.' },
+      { type:'role', depth:1, chip:'chip-role', label:'🎭 תפקיד', text:'אחד מכם הוא מדריך טיולים, השני תייר/ת אבודה. המדריך „מציל” את התייר ב-2 דקות.', yes:'בחרו תפקידים + טיימר. בסוף התייר מחליט אם לתת טיפ (נשיקה / חיבוק / מחמאה).', no:'במקום זה: כל אחד מתאר את „המסלול” האידיאלי ליום מושלם ביחד.', maybe:'רק דקה אחת, ואפשר להישאר במקום.' },
+      { type:'role', depth:2, chip:'chip-role', label:'🎭 תפקיד', text:'אתם שני סוכנים חשאיים שנפגשים בפארק להעברת מידע סודי (על מה שאתם אוהבים אחד בשני).', yes:'2 דקות בתפקיד. השתמשו בקודים מצחיקים. בסוף „המבצע” מסתיים בלחיצת יד סודית.', no:'פשוט לחשו אחד לשני 2 דברים שאתם אוהבים בשני.', maybe:'דקה אחת בלבד, ואפשר בלי קודים.' },
+      { type:'role', depth:1, chip:'chip-role', label:'🎭 תפקיד', text:'אחד מכם הוא שף מפורסם, השני מבקר אוכל קפדן. תארו מנה דמיונית ש„הכנתם” הערב.', yes:'90 שניות של תיאור מפורט + ביקורת. בסוף המבקר נותן כוכבים (1–5) ונשיקה בהתאם.', no:'כל אחד אומר מה המנה האמיתית שהכי היה רוצה לאכול עכשיו ביחד.', maybe:'רק תיאור קצר של 30 שניות.' },
+      { type:'role', depth:2, chip:'chip-role', label:'🎭 תפקיד', text:'דמיינו שאתם בני 80. ספרו אחד לשני איך נראית הזוגיות שלכם „מהעתיד”.', yes:'2 דקות בתפקיד – קול, יציבה, סיפורים. מי שיותר משכנע זוכה בחיבוק ארוך.', no:'במקום תפקיד: מה אתם מקווים שיהיה נכון עליכם בעוד 20 שנה?', maybe:'רק משפט אחד מכל אחד בתור „בן/בת 80”.' },
+      { type:'role', depth:1, chip:'chip-role', label:'🎭 תפקיד', text:'אתם שני דמויות מסרט / ספר אהוב. המשיכו סצנה רומנטית או מצחיקה ל-90 שניות.', yes:'בחרו דמויות עכשיו + טיימר. בסוף תנו לסרט כותרת חדשה.', no:'רק אמרו איזה סרט/ספר הכי מייצג אתכם כזוג.', maybe:'דקה אחת, ואפשר לבחור דמויות מצחיקות בלבד.' },
+      { type:'challenge', depth:2, chip:'chip-challenge', label:'🔥 אתגר', text:'תנו אחד לשני עיסוי כתפיים / צוואר של 90 שניות – בלי מילים.', yes:'מושלם. הפעילו טיימר. מי שיושב ראשון מקבל ראשון.', no:'במקום זה – חיבוק של 30 שניות עם נשימה משותפת.', maybe:'גרסה קלה: 45 שניות, ורק כתפיים.' },
+      { type:'challenge', depth:2, chip:'chip-challenge', label:'🔥 אתגר', text:'כתבו אחד לשני מחמאה על פתק (או בטלפון) – בלי להראות. אחר כך מקריאים בו-זמנית.', yes:'60 שניות לכתוב → מקריאים. מי שגרם לחיוך יותר גדול זוכה בלחיצה חזקה.', no:'פשוט אמרו מחמאה אחת בקול רם עכשיו.', maybe:'אפשר לכתוב רק משפט קצר, או להגיד במקום לכתוב.' },
+      { type:'challenge', depth:1, chip:'chip-challenge', label:'🔥 אתגר', text:'למשך הדקה הבאה – מדברים רק בלחישות.', yes:'טיימר לדקה. כל דיבור רגיל = לגימה.', no:'30 שניות של שקט מוחלט תוך כדי מבט בעיניים.', maybe:'רק 30 שניות של לחישות.' },
+      { type:'challenge', depth:1, chip:'chip-challenge', label:'🔥 אתגר', text:'בחרו שיר ותנו אחד לשני „הופעה” קצרה (שירה / ריקוד / הצגה) של 40 שניות.', yes:'בחרו שיר + טיימר. הקהל חייב למחוא כפיים בסוף.', no:'רק שירו ביחד את הבית הראשון של שיר שאתם מכירים.', maybe:'אפשר רק לזוז לקצב, בלי לשיר.' },
+      { type:'challenge', depth:2, chip:'chip-challenge', label:'🔥 אתגר', text:'עמדו אחד מול השני ושמרו על קשר עין ל-45 שניות בלי לצחוק.', yes:'טיימר. מי שצוחק ראשון – שותה לגימה.', no:'במקום זה: 20 שניות של קשר עין + חיוך מותר.', maybe:'30 שניות, וצחוק קטן מותר.' },
+      { type:'challenge', depth:1, chip:'chip-challenge', label:'🔥 אתגר', text:'תארו את היום של השני כאילו הייתם הוא/היא – בגוף ראשון, 60 שניות.', yes:'בחרו מי מתחיל. בסוף השני נותן ציון דיוק מ-1 עד 10.', no:'רק אמרו 2 דברים שאתם חושבים שהשני עשה היום.', maybe:'30 שניות בלבד.' },
+      { type:'challenge', depth:2, chip:'chip-challenge', label:'🔥 אתגר', text:'עשו אחד לשני 3 מחמאות פיזיות (על מראה / נוכחות / מגע) – לסירוגין.', yes:'לסירוגין, בלי לחזור על אותו דבר. בסוף חיבוק.', no:'רק מחמאה אחת לכל אחד.', maybe:'אפשר מחמאות על אופי במקום על מראה.' },
+      { type:'challenge', depth:1, chip:'chip-challenge', label:'🔥 אתגר', text:'למשך 2 דקות – אסור להגיד את המילים „כן”, „לא”, „אולי”.', yes:'טיימר. כל הפרה = לגימה. דברו על מה שבא לכם.', no:'רק דקה אחת, ומילים אסורות רק „כן” ו„לא”.', maybe:'דקה אחת, ואפשר להגיד „אולי”.' },
+      { type:'question', depth:2, chip:'chip-question', label:'💭 שאלה', text:'שתפו בכנות: מה הדבר הקטן שעשיתי לאחרונה שגרם לך להרגיש הכי אהוב/ה?', yes:'ענו שניכם בכנות. אחרי התשובות – לגימה משותפת.', no:'אמרו במקום זאת דבר אחד שאתם מעריכים אחד בשני השבוע.', maybe:'אפשר לענות בקצרה, או לבקש דוגמה מהשבוע האחרון.' },
+      { type:'question', depth:3, chip:'chip-question', label:'💭 שאלה', text:'שתפו: אם היינו יכולים לתקן רגע אחד מהשנים האחרונות – איזה רגע הייתם בוחרים?', yes:'שתפו בכנות. אין צורך לפתור הכל – רק להקשיב.', no:'ספרו על רגע שאתם שמחים שלא שיניתם.', maybe:'אפשר לדבר על רגע קטן ולא דרמטי.' },
+      { type:'question', depth:3, chip:'chip-question', label:'💭 שאלה', text:'שתפו בעדינות: מה הפחד הכי שקט שלכם לגבי העתיד שלנו – כזה שכמעט לא מדברים עליו?', yes:'ענו בעדינות. אחרי זה – חיבוק או לחיצת יד.', no:'במקום פחד – שתפו חלום שקט לגבי העתיד.', maybe:'אפשר לשתף רק חלק, או לבקש שהשני יתחיל.' },
+      { type:'question', depth:3, chip:'chip-question', label:'💭 שאלה', text:'שתפו: מתי בפעם האחרונה הרגשתם שאני באמת רואה אתכם – את כולו/ה?', yes:'ספרו את הרגע. אם קשה לזכור – תארו איך תרצו להרגיש שנראים.', no:'אז אמרו מה גורם לכם להרגיש הכי „נראים” ביום-יום.', maybe:'אפשר לתאר תחושה כללית בלי רגע ספציפי.' },
+      { type:'question', depth:2, chip:'chip-question', label:'💭 שאלה', text:'שתפו: מה הדבר שאתם עדיין לומדים עליי אחרי כל השנים האלה?', yes:'ענו שניכם. הפתעות קטנות מותרות ומעודדות.', no:'אמרו דבר אחד שגיליתם השנה.', maybe:'אפשר משהו קטן מאוד או מצחיק.' },
+      { type:'question', depth:3, chip:'chip-question', label:'💭 שאלה', text:'דברו על זה: איך אתם הכי אוהבים שאנחנו פותרים ויכוחים?', yes:'שתפו בכנות מה עובד ומה פחות. בלי האשמות – רק תובנות.', no:'אמרו רק מה עובד טוב אצלכם.', maybe:'אפשר לדבר על פעם אחת ספציפית שהסתיימה טוב.' },
+      { type:'question', depth:2, chip:'chip-question', label:'💭 שאלה', text:'שתפו: מה המתנה הכי לא-חומרית שקיבלתם ממני?', yes:'ענו. אחר כך לגימה לכבוד המתנות האלה.', no:'אמרו מתנה קטנה מהזמן האחרון.', maybe:'אפשר כמה דוגמאות קצרות.' },
+      { type:'question', depth:3, chip:'chip-question', label:'💭 שאלה', text:'שתפו: אם הייתם כותבים מכתב קצר לעצמכם מלפני 7 שנים – מה הייתם אומרים על הזוגיות שלנו?', yes:'שתפו את „המכתב” בקול. מי שרוצה יכול לכתוב באמת.', no:'רק משפט אחד ל„אני מלפני 7 שנים”.', maybe:'אפשר משפט מצחיק או קליל.' },
+      { type:'fantasy', depth:1, chip:'chip-fantasy', label:'✨ פנטזיה', text:'דמיינו ותארו: אם היינו מקבלים 48 שעות בלי טלפון, בלי עבודה ובלי התחייבויות – מה הייתם רוצים שנעשה?', yes:'תארו את התרחיש הכי מפורט. מי שמתאר יותר חי – זוכה בנשיקה.', no:'בחרו רק מקום אחד שהייתם רוצים לברוח אליו ביחד.', maybe:'תארו רק את הבוקר הראשון או את הערב.' },
+      { type:'fantasy', depth:1, chip:'chip-fantasy', label:'✨ פנטזיה', text:'דמיינו שאתם יכולים להחליף גופים לערב אחד – שתפו מה הדבר הראשון שהייתם עושים.', yes:'שתפו בכנות (ובחיוך). אחר כך לגימה.', no:'מה הכי הייתם רוצים להרגיש מנקודת המבט של השני?', maybe:'אפשר לענות בצחוק, או רק על דבר אחד קטן.' },
+      { type:'fantasy', depth:1, chip:'chip-fantasy', label:'✨ פנטזיה', text:'שתפו: אם הייתי יכול/ה להעניק לכם כוח-על ליום אחד – איזה כוח הייתם מבקשים ולמה?', yes:'ענו שניכם. אחר כך דמיינו איך הייתם משתמשים בכוחות ביחד.', no:'בחרו כוח-על לזוגיות עצמה (לא לאדם).', maybe:'אפשר לבחור כוח מצחיק ולא רציני.' },
+      { type:'fantasy', depth:1, chip:'chip-fantasy', label:'✨ פנטזיה', text:'דמיינו: אתם מקבלים כרטיס לטיסה לכל מקום בעולם מחר בבוקר. תארו לאן ואיך נראה היום הראשון.', yes:'תארו ביחד. בסוף בחרו יעד אחד משותף.', no:'רק שם של עיר/מדינה אחת.', maybe:'אפשר יעד קרוב או דמיוני לגמרי.' },
+      { type:'fantasy', depth:2, chip:'chip-fantasy', label:'✨ פנטזיה', text:'שתפו: אם היינו יכולים לחיות שנה אחת בכל עשור של החיים מחדש – באיזה עשור הייתם בוחרים ולמה?', yes:'שתפו. מה הייתם עושים אחרת / אותו דבר?', no:'רק בחרו עשור אחד בלי הסבר ארוך.', maybe:'אפשר לבחור עשור עתידי.' },
+      { type:'fantasy', depth:1, chip:'chip-fantasy', label:'✨ פנטזיה', text:'תכננו ביחד מסעדה סודית רק לשניכם: מה השם, מה המנה המיוחדת (מנת הדגל), ומי מבשל?', yes:'תכננו ביחד ב-90 שניות. בסוף „תפריט” בעל פה.', no:'רק שם למסעדה + מנה אחת.', maybe:'אפשר מסעדה מצחיקה לגמרי.' },
+      { type:'fantasy', depth:2, chip:'chip-fantasy', label:'✨ פנטזיה', text:'שתפו: אם הייתם יכולים לשלוח הודעה אחת לעצמכם בעוד 10 שנים – מה הייתם כותבים?', yes:'כתבו / אמרו את ההודעה. אפשר לשתף או לשמור בסוד.', no:'רק מילה אחת או משפט קצר מאוד.', maybe:'אפשר הודעה מצחיקה או רצינית – לבחירתכם.' },
+      { type:'creative', depth:1, chip:'chip-creative', label:'🎨 יצירתי', text:'המציאו ביחד „חוק בית” חדש ומגוחך שתקף רק להערב.', yes:'תוך 60 שניות תסכימו על חוק. מי ששובר אותו – שותה.', no:'כל אחד ממציא חוק לעצמו בלבד.', maybe:'החוק יכול להיות מאוד קטן (למשל: אסור להגיד „בסדר”).' },
+      { type:'creative', depth:1, chip:'chip-creative', label:'🎨 יצירתי', text:'תנו אחד לשני שם חדש להערב (כינוי חיבה / דמות / תואר). השתמשו בו לפחות 3 פעמים.', yes:'בחרו שמות עכשיו. כל פעם ששוכחים – לגימה קטנה.', no:'רק אחד נותן כינוי לשני להערב.', maybe:'הכינוי יכול להיות רציני לגמרי.' },
+      { type:'creative', depth:1, chip:'chip-creative', label:'🎨 יצירתי', text:'ספרו סיפור משותף: אחד מתחיל משפט, השני ממשיך – 6 משפטים על „ההרפתקה שלנו מחר”.', yes:'התחילו עכשיו. בסוף תנו לסיפור כותרת.', no:'כל אחד מספר משפט אחד בלבד על מחר.', maybe:'רק 4 משפטים, ואפשר לצחוק באמצע.' },
+      { type:'creative', depth:1, chip:'chip-creative', label:'🎨 יצירתי', text:'המציאו ביחד ריקוד סודי של 4 תנועות. תרגלו אותו פעם אחת.', yes:'4 תנועות + חזרה. מי ששוכח תנועה – שותה.', no:'רק 2 תנועות פשוטות.', maybe:'אפשר תנועות מצחיקות מאוד ולא מתואמות.' },
+      { type:'creative', depth:1, chip:'chip-creative', label:'🎨 יצירתי', text:'בחרו חפץ בחדר ותנו לו סיפור חיים דרמטי / מצחיק כאילו הוא עד לזוגיות שלכם.', yes:'90 שניות של סיפור. השני יכול להוסיף פרק.', no:'רק משפט אחד על החפץ.', maybe:'אפשר לבחור חפץ מצחיק במיוחד.' },
+      { type:'creative', depth:1, chip:'chip-creative', label:'🎨 יצירתי', text:'כתבו / אמרו סיסמה לזוגיות שלכם (כמו סלוגן פרסומי). נסו 3 גרסאות.', yes:'3 סיסמאות. בחרו את האהובה ביותר ו„פרסמו” אותה בקול.', no:'רק סיסמה אחת.', maybe:'אפשר סיסמאות מצחיקות בלבד.' },
+      { type:'wild', depth:1, chip:'chip-wild', label:'🎲 הפתעה', text:'השחקן השני בוחר לך אתגר קטן עכשיו (עד 30 שניות). מותר לענות רק כן או אולי – אסור לא.', yes:'קבלו את האתגר במלואו. הפעילו טיימר אם צריך.', no:'הקלף הזה לא מאפשר „לא” – תבחרו כן או אולי.', maybe:'בקשו גרסה מוחלשת ב-50% מהאתגר המקורי.' },
+      { type:'wild', depth:2, chip:'chip-wild', label:'🎲 הפתעה', text:'שניכם סוגרים עיניים. כל אחד חושב על משאלה אחת על השני. אחר כך לוחצים ידיים ופותחים עיניים – בלי לספר.', yes:'עשו את זה עכשיו. שתיקה של 15 שניות עם עיניים עצומות.', no:'רק אחד עושה את המשאלה השקטה, והשני מחבק.', maybe:'אפשר לפתוח עיניים אחרי 10 שניות.' },
+      { type:'wild', depth:1, chip:'chip-wild', label:'🎲 הפתעה', text:'בחרו יחד „מילה סודית” להערב. כל פעם שמישהו אומר אותה – השני מקבל נשיקה על הלחי.', yes:'בחרו מילה עכשיו. המשחק מתחיל מיד.', no:'בחרו מחווה במקום מילה (למשל: כל חיוך גדול).', maybe:'המילה יכולה להיות נדירה מאוד.' },
+      { type:'wild', depth:2, chip:'chip-wild', label:'🎲 הפתעה', text:'החליפו טלפונים ל-60 שניות. כל אחד יכול לפתוח אפליקציה אחת (בלי לקרוא הודעות פרטיות).', yes:'טיימר ל-60 שניות. בחרו אפליקציה לא פולשנית (תמונות, מזג אוויר, מוזיקה…).', no:'רק החזיקו את הטלפון של השני בלי לפתוח כלום – 20 שניות של אמון.', maybe:'30 שניות, ורק מסך הבית.' },
+      { type:'wild', depth:1, chip:'chip-wild', label:'🎲 הפתעה', text:'עשו הגרלה: מי שמנצח בוחר את המוזיקה / התאורה / המשקה הבא ל-10 הדקות הקרובות.', yes:'אבן-נייר-מספריים או קובייה. המנצח שולט ב-10 דקות.', no:'פשוט תסכימו ביחד על שיר אחד עכשיו.', maybe:'השליטה רק על שיר אחד, לא על הכל.' }
+    ];
+
+    const surpriseDeck = [
+      { type:'surprise', depth:2, chip:'chip-surprise', label:'🎁 הפתעה מיוחדת', text:'שניכם קמים עכשיו ורוקדים ביחד 40 שניות לשיר שתבחרו – בלי לדבר.', yes:'בחרו שיר מהר + טיימר. ריקוד חובה!', no:'במקום ריקוד – חיבוק מתנדנד של 30 שניות עם מוזיקה ברקע.', maybe:'רק 20 שניות של תנועה חופשית.' },
+      { type:'surprise', depth:2, chip:'chip-surprise', label:'🎁 הפתעה מיוחדת', text:'מישהו מכם צריך להכין לשני משקה / חטיף קטן עכשיו (תוך 2 דקות) ולהגיש אותו כמו במסעדה.', yes:'בחרו מי מגיש. הפעילו טיימר. הגשה עם חיוך ו„בתיאבון”.', no:'רק מזגו מחדש את הכוסות אחד לשני.', maybe:'ההגשה יכולה להיות מאוד מינימלית.' },
+      { type:'surprise', depth:2, chip:'chip-surprise', label:'🎁 הפתעה מיוחדת', text:'עשו סלפי זוגי מצחיק / רומנטי עכשיו. מי שמצלם בוחר את הפוזה.', yes:'3 ניסיונות. בחרו את התמונה האהובה ושמרו אותה.', no:'רק חיבוק מצולם אחד.', maybe:'אפשר בלי להראות פנים – רק ידיים / צללים.' },
+      { type:'surprise', depth:2, chip:'chip-surprise', label:'🎁 הפתעה מיוחדת', text:'כל אחד כותב על פתק „דבר אחד שאני רוצה שנעשה יחד בחודש הקרוב”. מחליפים בלי לקרוא עדיין – קוראים ביחד.', yes:'כתבו עכשיו (60 שניות) → החליפו → קראו בקול.', no:'אמרו את הרעיון בקול בלי לכתוב.', maybe:'אפשר רעיון קטן מאוד ופשוט.' },
+      { type:'surprise', depth:2, chip:'chip-surprise', label:'🎁 הפתעה מיוחדת', text:'החליפו מקומות ישיבה / צדדים בספה ל-3 הקלפים הבאים.', yes:'קומו והחליפו עכשיו. זה נשאר עד סוף 3 הקלפים הבאים.', no:'רק החליפו ל-קלף אחד.', maybe:'אפשר רק להזיז כרית / לשנות תנוחה.' },
+      { type:'surprise', depth:2, chip:'chip-surprise', label:'🎁 הפתעה מיוחדת', text:'מישהו מכם מספר בדיחה / אנקדוטה מביכה על עצמו. השני חייב לצחוק – אחרת שותה.', yes:'בחרו מי מתחיל. אם אין צחוק אמיתי – לגימה לשני.', no:'רק ספרו משהו נחמד שקרה השבוע.', maybe:'הבדיחה יכולה להיות גרועה בכוונה.' },
+      { type:'surprise', depth:2, chip:'chip-surprise', label:'🎁 הפתעה מיוחדת', text:'עשו יחד „ברכה” קצרה לערב (או לחיים). כל אחד מוסיף משפט.', yes:'משפט-משפט. בסוף הרימו כוסות ולגימה משותפת.', no:'רק אחד אומר ברכה קצרה.', maybe:'הברכה יכולה להיות מצחיקה לגמרי.' },
+      { type:'surprise', depth:2, chip:'chip-surprise', label:'🎁 הפתעה מיוחדת', text:'למשך הקלף הבא – אתם מדברים בגוף שלישי על עצמכם („אילן חושב ש…”, „אילת מרגישה…”).', yes:'הכלל חל מיד על הקלף הבא. הפרה = לגימה.', no:'רק משפט אחד בגוף שלישי עכשיו.', maybe:'רק במשך 30 שניות.' }
+    ];
+
+    let currentRound = 1;
+    let maxRounds = 30;
+    let usedIndexes = [];
+    let usedSurprise = [];
+    let currentCard = null;
+    let timerInterval = null;
+    let timerSeconds = 0;
+    let cardsSinceSurprise = 0;
+    let selectedCategories = new Set(['role', 'challenge', 'question', 'fantasy', 'creative', 'wild']);
+    let currentDeck = deck;
+    let soundEnabled = true;
+    let favorites = [];
+    let favoritedRounds = new Set();
+    let stats = { yes: 0, no: 0, maybe: 0, surprise: 0 };
+    let lastChoice = null;
+
+    function selectLength(n) {
+      maxRounds = n;
+      document.querySelectorAll('.length-btn').forEach(b => b.classList.toggle('active', +b.dataset.len === n));
+    }
+    function toggleCategory(cat) {
+      const el = document.querySelector('.cat-toggle[data-cat="' + cat + '"]');
+      if (selectedCategories.has(cat)) {
+        if (selectedCategories.size <= 1) { showToast('צריך לפחות קטגוריה אחת 🙂'); return; }
+        selectedCategories.delete(cat);
+        el.classList.remove('active');
+      } else {
+        selectedCategories.add(cat);
+        el.classList.add('active');
+      }
+    }
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('btn-sound').textContent = soundEnabled ? '🔊' : '🔇';
+    }
+    function playChime() {
+      if (!soundEnabled) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [523.25, 659.25, 783.99];
+        notes.forEach((freq, i) => {
+          const t0 = ctx.currentTime + i * 0.12;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0, t0);
+          gain.gain.linearRampToValueAtTime(0.15, t0 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.35);
+          osc.connect(gain).connect(ctx.destination);
+          osc.start(t0);
+          osc.stop(t0 + 0.4);
+        });
+      } catch (e) { /* audio not available */ }
+    }
+    function weightedDraw(deckArr, usedArr, progress) {
+      let available = deckArr.map((_, i) => i).filter(i => !usedArr.includes(i));
+      if (available.length === 0) { usedArr.length = 0; available = deckArr.map((_, i) => i); }
+      const weights = available.map(i => {
+        const d = deckArr[i].depth || 1;
+        if (d === 1) return 1 + (1 - progress) * 2.2;
+        if (d === 3) return 1 + progress * 3.2;
+        return 1.4;
+      });
+      const total = weights.reduce((a, b) => a + b, 0);
+      let r = Math.random() * total;
+      let chosen = available[available.length - 1];
+      for (let k = 0; k < available.length; k++) {
+        r -= weights[k];
+        if (r <= 0) { chosen = available[k]; break; }
+      }
+      usedArr.push(chosen);
+      return deckArr[chosen];
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-' + id).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function showToast(msg, ms = 2200) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), ms);
+    }
+    function updateProgress() {
+      document.getElementById('round-num').textContent = currentRound;
+      document.getElementById('max-rounds').textContent = maxRounds;
+      document.getElementById('progress-fill').style.width = ((currentRound / maxRounds) * 100) + '%';
+    }
+    function getRandomFrom(arr, usedArr) {
+      let available = arr.map((_, i) => i).filter(i => !usedArr.includes(i));
+      if (available.length === 0) { usedArr.length = 0; available = arr.map((_, i) => i); }
+      const idx = available[Math.floor(Math.random() * available.length)];
+      usedArr.push(idx);
+      return arr[idx];
+    }
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return m + ':' + String(s).padStart(2, '0');
+    }
+    function startTimer(seconds) {
+      stopTimer();
+      timerSeconds = seconds;
+      const display = document.getElementById('timer-display');
+      if (display) display.textContent = formatTime(timerSeconds);
+      document.getElementById('timer-box').classList.add('active');
+      timerInterval = setInterval(() => {
+        timerSeconds--;
+        if (display) display.textContent = formatTime(Math.max(0, timerSeconds));
+        if (timerSeconds <= 0) {
+          stopTimer();
+          showToast('⏰ הזמן נגמר');
+          if (navigator.vibrate) navigator.vibrate([180, 80, 180]);
+        }
+      }, 1000);
+    }
+    function startFinalTimer() {
+      stopTimer();
+      timerSeconds = 30;
+      const display = document.getElementById('final-timer');
+      if (display) display.textContent = formatTime(timerSeconds);
+      timerInterval = setInterval(() => {
+        timerSeconds--;
+        if (display) display.textContent = formatTime(Math.max(0, timerSeconds));
+        if (timerSeconds <= 0) {
+          stopTimer();
+          showToast('💕 חיבוק מושלם');
+          if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+        }
+      }, 1000);
+    }
+    function stopTimer() {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    }
+    function startGame() {
+      currentRound = 1; usedIndexes = []; usedSurprise = []; cardsSinceSurprise = 0; currentCard = null;
+      favorites = []; favoritedRounds = new Set(); lastChoice = null;
+      stats = { yes: 0, no: 0, maybe: 0, surprise: 0 };
+      currentDeck = deck.filter(c => selectedCategories.has(c.type));
+      if (currentDeck.length === 0) currentDeck = deck;
+      stopTimer(); updateProgress();
+      document.getElementById('draw-card').style.display = 'block';
+      document.getElementById('prompt-card').style.display = 'none';
+      document.getElementById('result-card').style.display = 'none';
+      document.getElementById('timer-box').classList.remove('active');
+      document.getElementById('surprise-banner').classList.remove('show');
+      showScreen('play');
+    }
+    function drawCard() {
+      const forceSurprise = (cardsSinceSurprise >= 3 && Math.random() < 0.75) || cardsSinceSurprise >= 4;
+      if (forceSurprise) {
+        currentCard = getRandomFrom(surpriseDeck, usedSurprise);
+        cardsSinceSurprise = 0;
+        stats.surprise++;
+        document.getElementById('surprise-banner').classList.add('show');
+        showToast('🎁 קלף הפתעה!');
+        playChime();
+      } else {
+        const progress = maxRounds > 1 ? (currentRound - 1) / (maxRounds - 1) : 0;
+        currentCard = weightedDraw(currentDeck, usedIndexes, progress);
+        cardsSinceSurprise++;
+        document.getElementById('surprise-banner').classList.remove('show');
+      }
+      document.getElementById('draw-card').style.display = 'none';
+      document.getElementById('prompt-card').style.display = 'block';
+      document.getElementById('result-card').style.display = 'none';
+      document.getElementById('timer-box').classList.remove('active');
+      stopTimer();
+      const chip = document.getElementById('cat-chip');
+      chip.textContent = currentCard.label;
+      chip.className = 'cat-chip ' + currentCard.chip;
+      document.getElementById('prompt-text').textContent = currentCard.text;
+      document.getElementById('answer-row').style.display = 'grid';
+      lastChoice = null;
+      const favBtn = document.getElementById('btn-fav');
+      favBtn.textContent = favoritedRounds.has(currentRound) ? '❤️' : '🤍';
+      favBtn.classList.toggle('active', favoritedRounds.has(currentRound));
+    }
+    function toggleFavorite() {
+      if (!currentCard) return;
+      const favBtn = document.getElementById('btn-fav');
+      if (favoritedRounds.has(currentRound)) {
+        favoritedRounds.delete(currentRound);
+        favorites = favorites.filter(f => f.round !== currentRound);
+        favBtn.textContent = '🤍';
+        favBtn.classList.remove('active');
+        showToast('הוסר מהמועדפים');
+      } else {
+        favoritedRounds.add(currentRound);
+        favorites.push({ round: currentRound, label: currentCard.label, text: currentCard.text });
+        favBtn.textContent = '❤️';
+        favBtn.classList.add('active');
+        showToast('❤️ נשמר למועדפים');
+        if (navigator.vibrate) navigator.vibrate(60);
+      }
+    }
+    function answer(choice) {
+      if (!currentCard) return;
+      if (lastChoice) stats[lastChoice]--;
+      lastChoice = choice;
+      stats[choice]++;
+      const box = document.getElementById('result-box');
+      let text = '', cls = '';
+      if (choice === 'yes') { text = '✅ כן<br><br>' + currentCard.yes; cls = 'result-yes'; }
+      else if (choice === 'no') { text = '❌ לא<br><br>' + currentCard.no; cls = 'result-no'; }
+      else { text = '💭 אולי<br><br>' + currentCard.maybe; cls = 'result-maybe'; }
+      box.innerHTML = text;
+      box.className = 'result-box ' + cls;
+      document.getElementById('prompt-card').style.display = 'none';
+      document.getElementById('result-card').style.display = 'block';
+      if (currentCard.type === 'role' || currentCard.type === 'challenge' || currentCard.type === 'surprise') {
+        document.getElementById('timer-box').classList.add('active');
+        document.getElementById('timer-label').textContent = '⏱ טיימר מוכן';
+        document.getElementById('timer-display').textContent = '2:00';
+      }
+    }
+    function backToChoice() {
+      stopTimer();
+      document.getElementById('result-card').style.display = 'none';
+      document.getElementById('prompt-card').style.display = 'block';
+      document.getElementById('timer-box').classList.remove('active');
+      document.getElementById('answer-row').style.display = 'grid';
+      showToast('חזרו לבחירה');
+    }
+
+    function nextCard() {
+      stopTimer();
+      if (currentRound >= maxRounds) {
+        showToast('הגעתם לסיום המומלץ');
+        setTimeout(() => goToFinal(), 800);
+        return;
+      }
+      currentRound++;
+      updateProgress();
+      document.getElementById('draw-card').style.display = 'block';
+      document.getElementById('prompt-card').style.display = 'none';
+      document.getElementById('result-card').style.display = 'none';
+      document.getElementById('timer-box').classList.remove('active');
+      document.getElementById('surprise-banner').classList.remove('show');
+      showToast('קלף ' + currentRound);
+    }
+    function goToFinal() {
+      stopTimer();
+      document.getElementById('stat-yes').textContent = stats.yes;
+      document.getElementById('stat-maybe').textContent = stats.maybe;
+      document.getElementById('stat-no').textContent = stats.no;
+      document.getElementById('stat-surprise').textContent = stats.surprise;
+      renderFavorites();
+      showScreen('final');
+    }
+    function renderFavorites() {
+      const container = document.getElementById('favorites-list');
+      if (favorites.length === 0) {
+        container.innerHTML = '<p class="fav-empty">לא סימנתם קלפים אהובים הערב – בפעם הבאה סמנו ❤️ ליד הקלפים שריגשו אתכם.</p>';
+        return;
+      }
+      container.innerHTML = favorites.map(f =>
+        '<div class="fav-item"><span class="fav-chip">' + f.label + '</span>' + f.text + '</div>'
+      ).join('');
+    }
+    function favoritesAsText() {
+      let out = 'הקלפים האהובים שלנו מהערב 💗\n\n';
+      favorites.forEach((f, i) => { out += (i + 1) + '. ' + f.label + '\n' + f.text + '\n\n'; });
+      return out.trim();
+    }
+    function copyFavorites() {
+      if (favorites.length === 0) { showToast('אין עדיין קלפים שמורים'); return; }
+      const text = favoritesAsText();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast('📋 הועתק ללוח')).catch(() => showToast('לא הצלחנו להעתיק'));
+      } else {
+        showToast('ההעתקה לא נתמכת בדפדפן הזה');
+      }
+    }
+    function shareFavorites() {
+      if (favorites.length === 0) { showToast('אין עדיין קלפים שמורים'); return; }
+      const text = favoritesAsText();
+      if (navigator.share) {
+        navigator.share({ title: 'הקלפים האהובים שלנו', text }).catch(() => {});
+      } else {
+        copyFavorites();
+      }
+    }
+    function restartGame() { startGame(); }
+    updateProgress();
+  </script>
+</body>
+</html>
