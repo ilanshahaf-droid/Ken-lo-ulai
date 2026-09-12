@@ -1,11 +1,11 @@
-const CACHE_NAME = 'ken-lo-ulai-v3';
+const CACHE_NAME = 'ken-lo-ulai-v4';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png',
-  '/icon-maskable-512.png'
+  './',
+  './index.html',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-maskable-512.png'
 ];
 
 self.addEventListener('install', (event) => {
